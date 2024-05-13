@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "level-1.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -12,19 +12,19 @@
             "scale": 1.443472222222222,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -61.656884441450984,
-                "y": 178.04291349947079
+                "x": -63.04243240642745,
+                "y": 177.35013951698264
             }
         },
         "C:/Users/brann/OneDrive/Desktop/school shit/github/StarterPlatformer/assets/platformer-level-1.tmx#kenny_tilemap_packed": {
             "scaleInDock": 1
         },
         "level-1.tmx": {
-            "scale": 0.75,
+            "scale": 0.25,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 648,
-                "y": 426.6666666666667
+                "x": 1740,
+                "y": 352
             }
         },
         "level-1.tmx#tilemap-backgrounds_packed": {
@@ -46,12 +46,13 @@
     "map.tileWidth": 18,
     "map.width": 200,
     "openFiles": [
+        "level-1.tmx"
     ],
     "project": "level.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "C:/Users/brann/OneDrive/Desktop/school shit/github/StarterPlatformer/assets/platformer-level-1.tmx",
-        "level-1.tmx"
+        "level-1.tmx",
+        "C:/Users/brann/OneDrive/Desktop/school shit/github/StarterPlatformer/assets/platformer-level-1.tmx"
     ],
     "tileset.embedInMap": true,
     "tileset.tileSize": {
