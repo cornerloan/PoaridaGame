@@ -12,30 +12,35 @@
             "scale": 1.443472222222222,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 250.091407678245,
-                "y": 179.42846146444725
+                "x": -61.656884441450984,
+                "y": 178.04291349947079
             }
         },
         "C:/Users/brann/OneDrive/Desktop/school shit/github/StarterPlatformer/assets/platformer-level-1.tmx#kenny_tilemap_packed": {
             "scaleInDock": 1
         },
         "level-1.tmx": {
-            "scale": 0.25,
+            "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1700,
-                "y": -172
+                "x": 648,
+                "y": 426.6666666666667
             }
         },
         "level-1.tmx#tilemap-backgrounds_packed": {
+            "scaleInDock": 1
+        },
+        "level-1.tmx#tilemap-characters_packed": {
             "scaleInDock": 1
         },
         "level-1.tmx#tilemap_packed": {
             "scaleInDock": 1
         }
     },
+    "last.exportedFilePath": "C:/Users/brann/OneDrive/Desktop/school shit/github/PlatformerGame/assets",
     "last.imagePath": "C:/Users/brann/OneDrive/Desktop/school shit/github/PlatformerGame/assets",
     "map.height": 60,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 18,
     "map.tileWidth": 18,
