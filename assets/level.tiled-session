@@ -55,12 +55,15 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 0.5,
+            "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1127,
-                "y": 702
+                "x": 2147.333333333333,
+                "y": 241.33333333333337
             }
+        },
+        "platformer-level-1.tmx#tilemap-backgrounds-packed": {
+            "scaleInDock": 1
         },
         "platformer-level-1.tmx#tilemap-backgrounds_packed": {
             "scaleInDock": 1
