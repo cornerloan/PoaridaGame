@@ -55,11 +55,11 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 0.75,
+            "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 2147.333333333333,
-                "y": 241.33333333333337
+                "x": 1179,
+                "y": 548
             }
         },
         "platformer-level-1.tmx#tilemap-backgrounds-packed": {

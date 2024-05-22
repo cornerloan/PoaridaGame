@@ -3,7 +3,8 @@ class Platformer extends Phaser.Scene {
         super("platformerScene");
 
         this.numCoins = 0;
-
+        this.coinCount = 0;
+        // 30, 2045
         this.spawnPosX = 30;
         this.spawnPosY = 2045;
     }
@@ -11,11 +12,11 @@ class Platformer extends Phaser.Scene {
     init() {
         // variables and settings
         this.ACCELERATION = 400;
-        this.DRAG = 1600;    // DRAG < ACCELERATION = icy slide
-        this.physics.world.gravity.y = 1500;
+        this.DRAG = 1800;    // DRAG < ACCELERATION = icy slide
+        this.physics.world.gravity.y = 1400;
         this.JUMP_VELOCITY = -600;
         this.PARTICLE_VELOCITY = 50;
-        this.SCALE = 2.0;
+        this.SCALE = 1.0;
     }
 
 
@@ -23,9 +24,12 @@ class Platformer extends Phaser.Scene {
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 45 tiles wide and 25 tiles tall.
         this.map = this.add.tilemap("platformer-level-1", 18, 18, 45, 25);
-        this.physics.world.setBounds(0,0, 199*18 , 50*18);
+        this.physics.world.setBounds(0, 0, 199 * 18, 50 * 18);
 
         this.numKeys = 0;
+        this.gameActive = true;
+        this.winCount = 0;
+        this.frameCount = 0;
 
         // Add a tileset to the map
         // First parameter: name we gave the tileset in Tiled
@@ -77,6 +81,12 @@ class Platformer extends Phaser.Scene {
             frame: 68
         });
 
+        this.doors = this.map.createFromObjects("Objects", {
+            name: "door",
+            key: "tilemap_sheet",
+            frame: 130
+        });
+
         // TODO: Add turn into Arcade Physics here
         // Since createFromObjects returns an array of regular Sprites, we need to convert 
         // them into Arcade Physics sprites (STATIC_BODY, so they don't move) 
@@ -85,6 +95,7 @@ class Platformer extends Phaser.Scene {
         this.physics.world.enable(this.locks, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.flags, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.spikes, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.world.enable(this.doors, Phaser.Physics.Arcade.STATIC_BODY);
 
         // Create a Phaser group out of the array this.coins
         // This will be used for collision detection below.
@@ -93,6 +104,7 @@ class Platformer extends Phaser.Scene {
         this.lockGroup = this.add.group(this.locks);
         this.flagGroup = this.add.group(this.flags);
         this.spikeGroup = this.add.group(this.spikes);
+        this.doorGroup = this.add.group(this.doors);
 
         // set up player avatar (30, 2045)
         my.sprite.player = this.physics.add.sprite(this.spawnPosX, this.spawnPosY, "platformer_characters", "tile_0000.png");
@@ -106,6 +118,7 @@ class Platformer extends Phaser.Scene {
         this.physics.add.overlap(my.sprite.player, this.coinGroup, (obj1, obj2) => {
             obj2.destroy(); // remove coin on overlap
             this.numCoins++;
+            this.coinCount++;
         });
 
         // Handle collision detection with keys
@@ -127,13 +140,25 @@ class Platformer extends Phaser.Scene {
         this.physics.add.overlap(my.sprite.player, this.flagGroup, (obj1, obj2) => {
             this.spawnPosX = obj2.x;
             this.spawnPosY = obj2.y;
+            obj2.destroy();
+            this.coinCount = 0;
         });
 
         // Handle collision with spikes
         this.physics.add.collider(my.sprite.player, this.spikeGroup, (obj1, obj2) => {
-            console.log("WDAHIAWDHOI");
+            //console.log("WDAHIAWDHOI");
+            this.numCoins -= this.coinCount;
+            this.coinCount = 0;
             this.scene.restart();
+            //obj1.x = this.spawnPosX;
+            //obj1.y = this.spawnPosY;
         });
+
+        // Handle collision with door
+        this.physics.add.overlap(my.sprite.player, this.doorGroup, (obj1, obj2) => {
+            this.gameActive = false;
+        });
+
 
         // set up Phaser-provided cursor key input, but also with wasd keys for preference
         cursors = this.input.keyboard.createCursorKeys();
@@ -155,17 +180,49 @@ class Platformer extends Phaser.Scene {
         });
 
         my.vfx.walking.stop()
-
+        this.arc1 = this.add.arc(30, 30, 20, 270, -270, true, 0xFFFF00, 1);
+        this.arc1.setScrollFactor(0);
+        this.coinText = this.add.text(60, 15, "x", {
+            fontSize: '30px'
+        });
+        //this.coinText.text = "x " + this.numCoins;
+        this.coinText.setColor("#ffffff");
+        this.coinText.setScrollFactor(0);
         // camera code
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
         this.cameras.main.setDeadzone(50, 50);
         this.cameras.main.setZoom(this.SCALE);
 
+
+        this.winText = this.add.text(game.config.width / 1.3, game.config.height / 2, "Congratulations", {
+            fontSize: '30px'
+        });
+        this.winText.setColor("#ffffff");
+        this.winText.setScrollFactor(0);
+        this.winText.visible = false;
+
+        this.button = this.add.rectangle(game.config.width / 1.15, game.config.height / 1.6, game.config.width / 8, game.config.height / 16, 0x6666ff);
+        this.button.setInteractive();
+        this.button.setScrollFactor(0);
+        this.button.on('pointerup', function () {
+            this.scene.start("menuScene");
+        }, this);
+        this.button.visible = false;
+
+        this.buttonText = this.add.text(game.config.width / 1.15, game.config.height / 1.6, "Main Menu", {
+            fontSize: '25px'
+        });
+        this.buttonText.setColor("#ffffff");
+        this.buttonText.setOrigin(0.5);
+        this.buttonText.setScrollFactor(0);
+        this.buttonText.visible = false;
     }
 
 
     update() {
+        this.frameCount++;
+
         if (cursors.left.isDown || this.aKey.isDown) {
             my.sprite.player.setAccelerationX(-this.ACCELERATION);
             my.sprite.player.resetFlip();
@@ -177,27 +234,34 @@ class Platformer extends Phaser.Scene {
 
             // Only play smoke effect if touching the ground
             if (my.sprite.player.body.blocked.down) {
-
-                my.vfx.walking.start();
-
+                if (this.frameCount > 10) {
+                    my.vfx.walking.start();
+                    this.frameCount = 0;
+                }
+                else {
+                    my.vfx.walking.stop();
+                }
             }
 
         } else if (cursors.right.isDown || this.dKey.isDown) {
             my.sprite.player.setAccelerationX(this.ACCELERATION);
             my.sprite.player.setFlip(true, false);
             my.sprite.player.anims.play('walk', true);
-            // TODO: add particle following code here
+            // particle following code here
             my.vfx.walking.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
-
             my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
 
             // Only play smoke effect if touching the ground
-
             if (my.sprite.player.body.blocked.down) {
-
-                my.vfx.walking.start();
-
+                if (this.frameCount > 10) {
+                    my.vfx.walking.start();
+                    this.frameCount = 0;
+                }
+                else {
+                    my.vfx.walking.stop();
+                }
             }
+
 
         } else {
             // Set acceleration to 0 and have DRAG take over
@@ -218,7 +282,36 @@ class Platformer extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.rKey)) {
+            this.numCoins -= this.coinCount;
+            this.coinCount = 0;
             this.scene.restart();
         }
+        this.updateText();
+
+        if (!this.gameActive) {
+            this.showWinText();
+            this.winCount++;
+            if (this.winCount >= 300) {
+                this.showMenuButton();
+            }
+            //my.vfx.walking.stop();
+            //my.sprite.player.anims.play('idle');
+        }
+
     }
+
+    updateText() {
+        this.coinText.text = "x" + this.numCoins;
+    }
+
+    showWinText() {
+        this.winText.visible = true;
+        this.winText.text = "Congratulations\n" + "Score: " + this.numCoins;
+    }
+
+    showMenuButton() {
+        this.button.visible = true;
+        this.buttonText.visible = true;
+    }
+
 }
