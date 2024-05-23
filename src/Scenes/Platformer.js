@@ -19,6 +19,20 @@ class Platformer extends Phaser.Scene {
         this.SCALE = 1.0;
     }
 
+    preload(){
+        this.load.setPath("./assets/");
+
+        this.load.audio('step1_grass', 'footstep_grass_000.ogg');
+        //this.load.audio('step2_grass', 'footstep_grass_001.ogg');
+        //this.load.audio('step1_block', 'footstep_concrete_000');
+        //this.load.audio('step2_block', 'footstep_concrete_001');
+
+        //this.step1 = this.sound.add('step1_grass');
+        //this.step1 = this.sound.add('assets/footstep_grass_000.ogg');
+        //this.step1.on('play', listener);
+
+    }
+
 
     create() {
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
@@ -31,26 +45,27 @@ class Platformer extends Phaser.Scene {
         this.winCount = 0;
         this.frameCount = 0;
 
+        this.soundCount = 0;
+        //my.gameSounds = {};
+        //my.gameSounds.sfx = {};
+        //my.gameSounds.sfx.step1 = this.sound.add('step1_grass');
+        this.walk1 = this.sound.add('step1_grass');
+
         // Add a tileset to the map
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
         this.tileset = this.map.addTilesetImage("tilemap_packed", "tilemap_tiles");
+        this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
 
         // Create a layer
+        this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
         this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
 
         // Make it collidable
         this.groundLayer.setCollisionByProperty({
             collides: true
         });
-
-        // TODO: Add createFromObjects here
-        // Find coins in the "Objects" layer in Phaser
-        // Look for them by finding objects with the name "coin"
-        // Assign the coin texture from the tilemap_sheet sprite sheet
-        // Phaser docs:
-        // https://newdocs.phaser.io/docs/3.80.0/focus/Phaser.Tilemaps.Tilemap-createFromObjects
-
+        
         this.coins = this.map.createFromObjects("Objects", {
             name: "coin",
             key: "tilemap_sheet",
@@ -222,6 +237,7 @@ class Platformer extends Phaser.Scene {
 
     update() {
         this.frameCount++;
+        this.soundCount++;
 
         if (cursors.left.isDown || this.aKey.isDown) {
             my.sprite.player.setAccelerationX(-this.ACCELERATION);
@@ -234,12 +250,20 @@ class Platformer extends Phaser.Scene {
 
             // Only play smoke effect if touching the ground
             if (my.sprite.player.body.blocked.down) {
+                //if(this.soundCount >= 120) {
+                //    my.gameSounds.sfx.step1.play();
+                //    this.soundCount = 0;
+                //}
+                if(!this.walk1.isPlaying){
+                    this.walk1.play();
+                }
                 if (this.frameCount > 10) {
                     my.vfx.walking.start();
                     this.frameCount = 0;
                 }
                 else {
                     my.vfx.walking.stop();
+                    //my.gameSounds.sfx.step1.stop();
                 }
             }
 
@@ -253,11 +277,19 @@ class Platformer extends Phaser.Scene {
 
             // Only play smoke effect if touching the ground
             if (my.sprite.player.body.blocked.down) {
+                //if(this.soundCount >= 120) {
+                //    my.gameSounds.sfx.step1.play();
+                //    this.soundCount = 0;
+                //}
+                if(!this.walk1.isPlaying){
+                    this.walk1.play();
+                }
                 if (this.frameCount > 10) {
                     my.vfx.walking.start();
                     this.frameCount = 0;
                 }
                 else {
+                    //my.gameSounds.sfx.step1.stop();
                     my.vfx.walking.stop();
                 }
             }
@@ -270,6 +302,7 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.anims.play('idle');
             // TODO: have the vfx stop playing
             my.vfx.walking.stop();
+            this.walk1.stop();  
         }
 
         // player jump
@@ -298,6 +331,7 @@ class Platformer extends Phaser.Scene {
             //my.sprite.player.anims.play('idle');
         }
 
+        //if(this.soundCount >= 120) this.soundCount = 0;
     }
 
     updateText() {

@@ -10,6 +10,7 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "C:/Users/brann/OneDrive/Desktop/school shit/github/PlatformImprovement/assets/platformer-level-1.tmx": {
@@ -34,6 +35,18 @@
         "C:/Users/brann/OneDrive/Desktop/school shit/github/StarterPlatformer/assets/platformer-level-1.tmx#kenny_tilemap_packed": {
             "scaleInDock": 1
         },
+        "C:/Users/brann/OneDrive/Desktop/school shit/github/TopDownWorld/assets/Tiny Town.tmx": {
+            "scale": 5.1240625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.11221564920412,
+                "y": 79.81947917301945
+            }
+        },
+        "C:/Users/brann/OneDrive/Desktop/school shit/github/TopDownWorld/assets/Tiny Town.tmx#tiny-town-packed": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "level-1.tmx": {
             "scale": 0.25,
             "selectedLayer": 1,
@@ -56,14 +69,18 @@
                 3
             ],
             "scale": 0.5,
-            "selectedLayer": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1179,
-                "y": 548
+                "x": 425,
+                "y": 552
             }
         },
-        "platformer-level-1.tmx#tilemap-backgrounds-packed": {
+        "platformer-level-1.tmx#tilemap-backgrounds": {
             "scaleInDock": 1
+        },
+        "platformer-level-1.tmx#tilemap-backgrounds-packed": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "platformer-level-1.tmx#tilemap-backgrounds_packed": {
             "scaleInDock": 1
@@ -77,7 +94,7 @@
         }
     },
     "last.exportedFilePath": "C:/Users/brann/OneDrive/Desktop/school shit/github/PlatformerGame/assets",
-    "last.imagePath": "C:/Users/brann/OneDrive/Desktop/school shit/github/PlatformerGame/assets",
+    "last.imagePath": "C:/Users/brann/Downloads/kenney_pixel-platformer/Tilemap",
     "map.height": 60,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -91,6 +108,7 @@
     "property.type": "bool",
     "recentFiles": [
         "platformer-level-1.tmx",
+        "C:/Users/brann/OneDrive/Desktop/school shit/github/TopDownWorld/assets/Tiny Town.tmx",
         "C:/Users/brann/OneDrive/Desktop/school shit/github/PlatformImprovement/assets/platformer-level-1.tmx",
         "level-1.tmx",
         "C:/Users/brann/OneDrive/Desktop/school shit/github/StarterPlatformer/assets/platformer-level-1.tmx"
