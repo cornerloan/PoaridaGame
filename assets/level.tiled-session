@@ -71,8 +71,8 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 425,
-                "y": 552
+                "x": 775,
+                "y": 752
             }
         },
         "platformer-level-1.tmx#tilemap-backgrounds": {

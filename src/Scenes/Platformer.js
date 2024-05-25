@@ -2,11 +2,11 @@ class Platformer extends Phaser.Scene {
     constructor() {
         super("platformerScene");
 
-        this.numCoins = 0;
-        this.coinCount = 0;
-        // 30, 2045
+        //30, 2045
         this.spawnPosX = 30;
         this.spawnPosY = 2045;
+
+        this.numCoins = 0;
     }
 
     init() {
@@ -19,7 +19,7 @@ class Platformer extends Phaser.Scene {
         this.SCALE = 1.0;
     }
 
-    preload(){
+    preload() {
         this.load.setPath("./assets/");
 
         this.load.audio('step1_grass', 'footstep_grass_000.ogg');
@@ -40,6 +40,12 @@ class Platformer extends Phaser.Scene {
         this.map = this.add.tilemap("platformer-level-1", 18, 18, 45, 25);
         this.physics.world.setBounds(0, 0, 199 * 18, 50 * 18);
 
+        //this.spawnPosX = 30;
+        //this.spawnPosY = 2045;
+        this.jumpTimer = 0;
+
+        this.coinCount = 0;
+
         this.numKeys = 0;
         this.gameActive = true;
         this.winCount = 0;
@@ -55,17 +61,17 @@ class Platformer extends Phaser.Scene {
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
         this.tileset = this.map.addTilesetImage("tilemap_packed", "tilemap_tiles");
-        this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
+        //this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
 
         // Create a layer
-        this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
+        //this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
         this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
 
         // Make it collidable
         this.groundLayer.setCollisionByProperty({
             collides: true
         });
-        
+
         this.coins = this.map.createFromObjects("Objects", {
             name: "coin",
             key: "tilemap_sheet",
@@ -194,6 +200,14 @@ class Platformer extends Phaser.Scene {
             alpha: { start: 1, end: 0.1 },
         });
 
+        // jumping vfx
+        my.vfx.jumping = this.add.particles(0, 0, "kenny-particles", {
+            frame: ['trace_04.png', 'trace_05.png'],
+            scale: { start: 0.03, end: 0.1 },
+            lifespan: 350,
+            alpha: { start: 1, end: 0.1 },
+        });
+
         my.vfx.walking.stop()
         this.arc1 = this.add.arc(30, 30, 20, 270, -270, true, 0xFFFF00, 1);
         this.arc1.setScrollFactor(0);
@@ -221,6 +235,9 @@ class Platformer extends Phaser.Scene {
         this.button.setInteractive();
         this.button.setScrollFactor(0);
         this.button.on('pointerup', function () {
+            this.spawnPosX = 30;
+            this.spawnPosY = 2045;
+            this.numCoins = 0;
             this.scene.start("menuScene");
         }, this);
         this.button.visible = false;
@@ -254,7 +271,7 @@ class Platformer extends Phaser.Scene {
                 //    my.gameSounds.sfx.step1.play();
                 //    this.soundCount = 0;
                 //}
-                if(!this.walk1.isPlaying){
+                if (!this.walk1.isPlaying) {
                     this.walk1.play();
                 }
                 if (this.frameCount > 10) {
@@ -281,7 +298,7 @@ class Platformer extends Phaser.Scene {
                 //    my.gameSounds.sfx.step1.play();
                 //    this.soundCount = 0;
                 //}
-                if(!this.walk1.isPlaying){
+                if (!this.walk1.isPlaying) {
                     this.walk1.play();
                 }
                 if (this.frameCount > 10) {
@@ -302,7 +319,7 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.anims.play('idle');
             // TODO: have the vfx stop playing
             my.vfx.walking.stop();
-            this.walk1.stop();  
+            this.walk1.stop();
         }
 
         // player jump
@@ -311,8 +328,15 @@ class Platformer extends Phaser.Scene {
             my.sprite.player.anims.play('jump');
         }
         if (my.sprite.player.body.blocked.down && (Phaser.Input.Keyboard.JustDown(cursors.up) || Phaser.Input.Keyboard.JustDown(this.wKey) || Phaser.Input.Keyboard.JustDown(this.spaceKey))) {
+            this.jumpTimer = 0;
             my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
+            my.vfx.jumping.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
+            my.vfx.jumping.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
+            my.vfx.jumping.start();
         }
+
+        this.jumpTimer++;
+        if (this.jumpTimer > 15) my.vfx.jumping.stop();
 
         if (Phaser.Input.Keyboard.JustDown(this.rKey)) {
             this.numCoins -= this.coinCount;
@@ -324,7 +348,7 @@ class Platformer extends Phaser.Scene {
         if (!this.gameActive) {
             this.showWinText();
             this.winCount++;
-            if (this.winCount >= 300) {
+            if (this.winCount >= 150) {
                 this.showMenuButton();
             }
             //my.vfx.walking.stop();
