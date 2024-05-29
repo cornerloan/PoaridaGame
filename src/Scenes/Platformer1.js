@@ -1,6 +1,6 @@
 class Platformer extends Phaser.Scene {
     constructor() {
-        super("platformerScene");
+        super("platformer1Scene");
 
         //30, 2045
         this.spawnPosX = 30;

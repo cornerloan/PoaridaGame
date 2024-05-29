@@ -18,7 +18,7 @@ class Menu extends Phaser.Scene {
         this.button = this.add.rectangle(game.config.width/2, game.config.height/1.75, game.config.width/4, game.config.height/8, 0x6666ff);
         this.button.setInteractive();
         this.button.on('pointerup', function() {
-            this.scene.start("platformerScene");
+            this.scene.start("platformer1Scene");
         }, this);
 
 
