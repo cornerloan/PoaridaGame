@@ -1,6 +1,6 @@
-class Platformer1 extends Phaser.Scene {
+class Platformer2 extends Phaser.Scene {
     constructor() {
-        super("platformer1Scene");
+        super("platformer2Scene");
 
         //30, 2045
         this.spawnPosX = 30;
