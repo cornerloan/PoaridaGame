@@ -1,0 +1,12 @@
+data:
+[0]: level to enter on levelSelect (0 is first level)
+[1]: number of levels unlocked (0 is only first level, 4 is all levels)
+[2]: checkpoints unlocked on level 0
+[3]: checkpoints unlocked on level 1
+[4]: checkpoints unlocked on level 2
+[5]: checkpoints unlocked on level 3
+[6]: checkpoints unlocked on level 4
+
+if numCheckpoints > 2, set it to 2.
+
+just hardcode what checkpoint player should spawn at based on their x position

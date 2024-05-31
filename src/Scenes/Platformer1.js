@@ -6,7 +6,16 @@ class Platformer1 extends Phaser.Scene {
         this.spawnPosX = 30;
         this.spawnPosY = 2045;
 
+        this.check0x = 30;
+        this.check0y = 2045;
+        this.check1x = 1100;
+        this.check1y = 60;
+        this.check2x = 2170;
+        this.check2y = 210;
+
+
         this.numCoins = 0;
+        this.data = [];
     }
 
     init() {
@@ -21,40 +30,40 @@ class Platformer1 extends Phaser.Scene {
 
     preload() {
         this.load.setPath("./assets/");
-
         this.load.audio('step1_grass', 'footstep_grass_000.ogg');
-        //this.load.audio('step2_grass', 'footstep_grass_001.ogg');
-        //this.load.audio('step1_block', 'footstep_concrete_000');
-        //this.load.audio('step2_block', 'footstep_concrete_001');
-
-        //this.step1 = this.sound.add('step1_grass');
-        //this.step1 = this.sound.add('assets/footstep_grass_000.ogg');
-        //this.step1.on('play', listener);
-
     }
 
 
-    create() {
+    create(data1) {
+        this.data = data1;
+
+        //set spawn point based on checkpoint used
+        if (this.data[2] == 0) {
+            this.spawnPosX = this.check0x;
+            this.spawnPosY = this.check0y;
+        }
+        if (this.data[2] == 1) {
+            this.spawnPosX = this.check1x;
+            this.spawnPosY = this.check1y;
+        }
+        if (this.data[2] == 2) {
+            this.spawnPosX = this.check2x;
+            this.spawnPosY = this.check2y;
+        }
+
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 45 tiles wide and 25 tiles tall.
         this.map = this.add.tilemap("platformer-level-1", 18, 18, 45, 25);
         this.physics.world.setBounds(0, 0, 199 * 18, 50 * 18);
 
-        //this.spawnPosX = 30;
-        //this.spawnPosY = 2045;
         this.jumpTimer = 0;
-
         this.coinCount = 0;
-
         this.numKeys = 0;
         this.gameActive = true;
         this.winCount = 0;
         this.frameCount = 0;
 
         this.soundCount = 0;
-        //my.gameSounds = {};
-        //my.gameSounds.sfx = {};
-        //my.gameSounds.sfx.step1 = this.sound.add('step1_grass');
         this.walk1 = this.sound.add('step1_grass');
 
         // Add a tileset to the map
@@ -146,7 +155,6 @@ class Platformer1 extends Phaser.Scene {
         this.physics.add.overlap(my.sprite.player, this.keyGroup, (obj1, obj2) => {
             obj2.destroy();
             this.numKeys++;
-            console.log(this.numKeys);
         });
 
         // Handle collision detection with locks
@@ -156,21 +164,29 @@ class Platformer1 extends Phaser.Scene {
                 obj2.destroy();
             }
         });
-
+ 
         // Handle collision with flags
         this.physics.add.overlap(my.sprite.player, this.flagGroup, (obj1, obj2) => {
             this.spawnPosX = obj2.x;
             this.spawnPosY = obj2.y;
             obj2.destroy();
             this.coinCount = 0;
+            this.data[2]++;
+            if (this.data[2] > 2) {
+                this.data[2] = 2;
+                data1[2] = 2;
+            }
         });
 
         // Handle collision with spikes
         this.physics.add.collider(my.sprite.player, this.spikeGroup, (obj1, obj2) => {
-            //console.log("WDAHIAWDHOI");
             this.numCoins -= this.coinCount;
             this.coinCount = 0;
-            this.scene.restart();
+            this.data[2] = data1[2]-1;
+            if(this.data[2] < 0){
+                this.data[2] = 0;
+            }
+            this.scene.start("platformer1Scene", this.data);
             //obj1.x = this.spawnPosX;
             //obj1.y = this.spawnPosY;
         });
