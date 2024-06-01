@@ -50,7 +50,7 @@ class Platformer1 extends Phaser.Scene {
             this.spawnPosX = this.check2x;
             this.spawnPosY = this.check2y;
         }
-        
+
         this.jumpTimer = 0;
         this.coinCount = 0;
         this.numKeys = 0;
@@ -70,10 +70,11 @@ class Platformer1 extends Phaser.Scene {
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
         this.tileset = this.map.addTilesetImage("tilemap_packed", "tilemap_tiles");
-        this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
+        //this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
 
         // Create a layer
-        this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
+        //this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
+        this.backgroundLayer = this.add.rectangle(0, 0, game.config.width * 18, game.config.height * 18, 0x6bd7ae);
         this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
 
         // Make it collidable
@@ -165,9 +166,14 @@ class Platformer1 extends Phaser.Scene {
             obj2.destroy();
             this.coinCount = 0;
             this.data[7]++;
+            this.data[3]++;
             if (this.data[7] > 2) {
                 this.data[7] = 2;
                 data1[7] = 2;
+            }
+            if (this.data[3] > 2) {
+                this.data[3] = 2;
+                data1[3] = 2;
             }
         });
 
@@ -199,6 +205,7 @@ class Platformer1 extends Phaser.Scene {
         this.aKey = this.input.keyboard.addKey('A');
         this.dKey = this.input.keyboard.addKey('D');
         this.spaceKey = this.input.keyboard.addKey('SPACE');
+        this.escKey = this.input.keyboard.addKey('ESC');
 
         // movement vfx
         my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
@@ -249,6 +256,9 @@ class Platformer1 extends Phaser.Scene {
             this.spawnPosX = 30;
             this.spawnPosY = 2045;
             this.numCoins = 0;
+            if (this.numCoins > this.data[9]) {
+                this.data[9] = this.numCoins;
+            }
             this.scene.start("levelScene", this.data);
         }, this);
         this.button.visible = false;
@@ -354,6 +364,14 @@ class Platformer1 extends Phaser.Scene {
             this.coinCount = 0;
             this.scene.restart();
         }
+        if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
+            if (this.numCoins > this.data[9]) {
+                this.data[9] = this.numCoins;
+            }
+            this.numCoins = 0;
+            this.coinCount = 0;
+            this.scene.start("levelScene", this.data);
+        }
         this.updateText();
 
         if (!this.gameActive) {
@@ -382,7 +400,7 @@ class Platformer1 extends Phaser.Scene {
         this.button.visible = true;
         this.buttonText.visible = true;
         //increment levels unlocked only if this is the first time beating this level.
-        if(this.data[1] == 1){
+        if (this.data[1] == 1) {
             this.data[1] = 2;
         }
     }

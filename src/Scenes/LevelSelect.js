@@ -29,7 +29,7 @@ class LevelSelect extends Phaser.Scene {
 
     create(data1) {
         this.data = data1;
-
+        this.data[7] = 0;
         this.position = this.data[0];
         this.checkpointsUnlocked = 0;
         this.justMoved = false;
@@ -64,7 +64,7 @@ class LevelSelect extends Phaser.Scene {
         this.spaceKey = this.input.keyboard.addKey('SPACE');
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        let infoStr = "This game supports both WASD and arrow key movements.\nSpacebar also supports jumping.\n\nUse movement to maneuver level and checkpoint selection.\nUse space key to enter the level at the chosen checkpoint.";
+        let infoStr = "This game supports both WASD and arrow key movements.\nSpacebar also supports jumping.\n\nUse movement to maneuver level and checkpoint selection.\nUse space key to enter the level at the chosen checkpoint.\nUse escape to leave the level.";
         this.infoText = this.add.text(game.config.width / 2, game.config.height / 6, infoStr, {
             fontSize: '20px'
         });
@@ -95,6 +95,55 @@ class LevelSelect extends Phaser.Scene {
         this.cursorPos = 0;
         this.levelPointerInitialY = (5 * game.config.height / 6) - 75;
         this.levelPointer = this.add.triangle(game.config.width / 3, this.levelPointerInitialY, 0, 32, 0, 0, 32, 16, 0x000000);
+
+        /*
+        this.level0highscore = this.add.text(this.levelXPositions[0], this.levelCircleY-100, "High Score: ", {
+            fontSize: '20px'
+        });
+        this.level0highscore.setColor("#ffffff");
+        this.level0highscore.setOrigin(0.5);
+        this.level0highscore.visible = false;
+            
+        this.level1highscore = this.add.text(this.levelXPositions[1], this.levelCircleY-100, "High Score: ", {
+            fontSize: '20px'
+        });
+        this.level1highscore.setColor("#ffffff");
+        this.level1highscore.setOrigin(0.5);
+        this.level1highscore.visible = false;
+            
+        this.level2highscore = this.add.text(this.levelXPositions[2], this.levelCircleY-100, "High Score: ", {
+            fontSize: '20px'
+        });
+        this.level2highscore.setColor("#ffffff");
+        this.level2highscore.setOrigin(0.5);
+        this.level2highscore.visible = false;
+            
+        this.level3highscore = this.add.text(this.levelXPositions[3], this.levelCircleY-100, "High Score: ", {
+            fontSize: '20px'
+        });
+        this.level3highscore.setColor("#ffffff");
+        this.level3highscore.setOrigin(0.5);
+        this.level3highscore.visible = false;
+            
+        this.level4highscore = this.add.text(this.levelXPositions[4], this.levelCircleY-100, "High Score: ", {
+            fontSize: '20px'
+        });
+        this.level4highscore.setColor("#ffffff");
+        this.level4highscore.setOrigin(0.5);
+        this.level4highscore.visible = false;
+        */
+        this.levelScores = [];
+        for (let i = 0; i < 5; i++) {
+            let yoffset = -100;
+            if(i%2 == 0) yoffset = 100;
+            let levelHighScore = this.add.text(this.levelXPositions[i], this.levelCircleY + yoffset, "High Score: 0", {
+                fontSize: '20px'
+            });
+            levelHighScore.setColor("#ffffff");
+            levelHighScore.setOrigin(0.5);
+            levelHighScore.visible = false;
+            this.levelScores[i] = levelHighScore;
+        }
     }
 
     update() {
@@ -156,6 +205,8 @@ class LevelSelect extends Phaser.Scene {
             this.levelPointer.y += this.cursorOffset;
             this.data[7]++;
         }
+
+        this.updateScoreText();
     }
 
     //checks every valid position for the character to stop, updates variables and stops the movement when true
@@ -254,4 +305,10 @@ class LevelSelect extends Phaser.Scene {
         }
     }
 
+    updateScoreText() {
+        for(let i = 0; i <= this.data[1]; i++){
+            this.levelScores[i].visible = true;
+            this.levelScores[i].text = "High Score: " + this.data[8+i];
+        }
+    }
 }

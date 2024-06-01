@@ -20,14 +20,19 @@ class Menu extends Phaser.Scene {
         this.button.on('pointerup', function() {
             //this.scene.start("platformer1Scene");
             let data = [];
-            data[0] = 0; //level to enter on levelScene
-            data[1] = 1; //number of levels unlocked
-            data[2] = 0; //checkpoints for level 0
-            data[3] = 2; //checkpoints for level 1
-            data[4] = 0; //checkpoints for level 2
-            data[5] = 0; //checkpoints for level 3
-            data[6] = 0; //checkpoints for level 4
-            data[7] = 0; //checkpoint to enter on
+            data[0] = 0;  //level to enter on levelScene
+            data[1] = 2;  //number of levels unlocked
+            data[2] = 0;  //checkpoints for level 0
+            data[3] = 0;  //checkpoints for level 1
+            data[4] = 0;  //checkpoints for level 2
+            data[5] = 0;  //checkpoints for level 3
+            data[6] = 0;  //checkpoints for level 4
+            data[7] = 0;  //checkpoint to enter on
+            data[8] = 0;  //high score coins for level 0
+            data[9] = 0;  //high score coins for level 1
+            data[10] = 0;  //high score coins for level 2
+            data[11] = 0;  //high score coins for level 3
+            data[12] = 0;  //high score coins for level 4
             this.scene.start("levelScene", data);
         }, this);
 
