@@ -10,7 +10,7 @@ class Platformer1 extends Phaser.Scene {
         this.check0y = 2045;
         this.check1x = 1100;
         this.check1y = 60;
-        this.check2x = 2170;
+        this.check2x = 2180;
         this.check2y = 210;
 
 
@@ -38,24 +38,19 @@ class Platformer1 extends Phaser.Scene {
         this.data = data1;
 
         //set spawn point based on checkpoint used
-        if (this.data[2] == 0) {
+        if (this.data[7] == 0) {
             this.spawnPosX = this.check0x;
             this.spawnPosY = this.check0y;
         }
-        if (this.data[2] == 1) {
+        if (this.data[7] == 1) {
             this.spawnPosX = this.check1x;
             this.spawnPosY = this.check1y;
         }
-        if (this.data[2] == 2) {
+        if (this.data[7] == 2) {
             this.spawnPosX = this.check2x;
             this.spawnPosY = this.check2y;
         }
-
-        // Create a new tilemap game object which uses 18x18 pixel tiles, and is
-        // 45 tiles wide and 25 tiles tall.
-        this.map = this.add.tilemap("platformer-level-1", 18, 18, 45, 25);
-        this.physics.world.setBounds(0, 0, 199 * 18, 50 * 18);
-
+        
         this.jumpTimer = 0;
         this.coinCount = 0;
         this.numKeys = 0;
@@ -66,14 +61,19 @@ class Platformer1 extends Phaser.Scene {
         this.soundCount = 0;
         this.walk1 = this.sound.add('step1_grass');
 
+        // Create a new tilemap game object which uses 18x18 pixel tiles, and is
+        // 45 tiles wide and 25 tiles tall.
+        this.map = this.add.tilemap("platformer-level-1", 18, 18, 45, 25);
+        this.physics.world.setBounds(0, 0, 199 * 18, 50 * 18);
+
         // Add a tileset to the map
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
         this.tileset = this.map.addTilesetImage("tilemap_packed", "tilemap_tiles");
-        //this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
+        this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
 
         // Create a layer
-        //this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
+        this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
         this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
 
         // Make it collidable
@@ -93,16 +93,16 @@ class Platformer1 extends Phaser.Scene {
             frame: 27
         });
 
-        this.locks = this.map.createFromObjects("Objects", {
-            name: "lock",
-            key: "tilemap_sheet",
-            frame: 28
-        });
-
         this.flags = this.map.createFromObjects("Objects", {
             name: "flag",
             key: "tilemap_sheet",
             frame: 111
+        });
+
+        this.locks = this.map.createFromObjects("Objects", {
+            name: "lock",
+            key: "tilemap_sheet",
+            frame: 28
         });
 
         this.spikes = this.map.createFromObjects("Objects", {
@@ -122,8 +122,8 @@ class Platformer1 extends Phaser.Scene {
         // them into Arcade Physics sprites (STATIC_BODY, so they don't move) 
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.keys, Phaser.Physics.Arcade.STATIC_BODY);
-        this.physics.world.enable(this.locks, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.flags, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.world.enable(this.locks, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.spikes, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.doors, Phaser.Physics.Arcade.STATIC_BODY);
 
@@ -131,8 +131,8 @@ class Platformer1 extends Phaser.Scene {
         // This will be used for collision detection below.
         this.coinGroup = this.add.group(this.coins);
         this.keyGroup = this.add.group(this.keys);
-        this.lockGroup = this.add.group(this.locks);
         this.flagGroup = this.add.group(this.flags);
+        this.lockGroup = this.add.group(this.locks);
         this.spikeGroup = this.add.group(this.spikes);
         this.doorGroup = this.add.group(this.doors);
 
@@ -157,6 +157,20 @@ class Platformer1 extends Phaser.Scene {
             this.numKeys++;
         });
 
+        // Handle collision with flags
+        this.physics.add.overlap(my.sprite.player, this.flagGroup, (obj1, obj2) => {
+            this.spawnPosX = obj2.x;
+            this.spawnPosY = obj2.y;
+            obj2.reached = true;
+            obj2.destroy();
+            this.coinCount = 0;
+            this.data[7]++;
+            if (this.data[7] > 2) {
+                this.data[7] = 2;
+                data1[7] = 2;
+            }
+        });
+
         // Handle collision detection with locks
         this.physics.add.collider(my.sprite.player, this.lockGroup, (obj1, obj2) => {
             if (this.numKeys > 0) {
@@ -164,31 +178,12 @@ class Platformer1 extends Phaser.Scene {
                 obj2.destroy();
             }
         });
- 
-        // Handle collision with flags
-        this.physics.add.overlap(my.sprite.player, this.flagGroup, (obj1, obj2) => {
-            this.spawnPosX = obj2.x;
-            this.spawnPosY = obj2.y;
-            obj2.destroy();
-            this.coinCount = 0;
-            this.data[2]++;
-            if (this.data[2] > 2) {
-                this.data[2] = 2;
-                data1[2] = 2;
-            }
-        });
 
         // Handle collision with spikes
         this.physics.add.collider(my.sprite.player, this.spikeGroup, (obj1, obj2) => {
             this.numCoins -= this.coinCount;
             this.coinCount = 0;
-            this.data[2] = data1[2]-1;
-            if(this.data[2] < 0){
-                this.data[2] = 0;
-            }
             this.scene.start("platformer1Scene", this.data);
-            //obj1.x = this.spawnPosX;
-            //obj1.y = this.spawnPosY;
         });
 
         // Handle collision with door
@@ -254,7 +249,7 @@ class Platformer1 extends Phaser.Scene {
             this.spawnPosX = 30;
             this.spawnPosY = 2045;
             this.numCoins = 0;
-            this.scene.start("menuScene");
+            this.scene.start("levelScene", this.data);
         }, this);
         this.button.visible = false;
 
@@ -386,6 +381,10 @@ class Platformer1 extends Phaser.Scene {
     showMenuButton() {
         this.button.visible = true;
         this.buttonText.visible = true;
+        //increment levels unlocked only if this is the first time beating this level.
+        if(this.data[1] == 1){
+            this.data[1] = 2;
+        }
     }
 
 }
