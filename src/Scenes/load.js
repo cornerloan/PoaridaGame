@@ -13,6 +13,7 @@ class Load extends Phaser.Scene {
         this.load.image("tilemap_tiles", "tilemap_packed.png");                         // Packed tilemap
         this.load.image("tilemap-background", "tilemap-backgrounds-packed.png");
         this.load.tilemapTiledJSON("platformer-level-1", "platformer-level-1.tmj");   // Tilemap in JSON
+        this.load.tilemapTiledJSON("platformer-level-0", "platformer-level-0.tmj");
 
         // Load the tilemap as a spritesheet
         this.load.spritesheet("tilemap_sheet", "tilemap_packed.png", {
@@ -64,6 +65,19 @@ class Load extends Phaser.Scene {
             frames: [
                 { frame: "tile_0001.png" }
             ],
+        });
+
+        this.anims.create({
+            key: 'enemywalk',
+            frames: this.anims.generateFrameNames('platformer_characters', {
+                prefix: "tile_",
+                start: 21,
+                end: 22,
+                suffix: ".png",
+                zeroPad: 4
+            }),
+            frameRate: 15,
+            repeat: -1
         });
 
          // ...and pass to the next Scene

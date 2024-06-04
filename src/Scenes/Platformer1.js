@@ -36,6 +36,7 @@ class Platformer1 extends Phaser.Scene {
 
     create(data1) {
         this.data = data1;
+        this.data[0] = 1;
 
         //set spawn point based on checkpoint used
         if (this.data[7] == 0) {
@@ -118,7 +119,6 @@ class Platformer1 extends Phaser.Scene {
             frame: 130
         });
 
-        // TODO: Add turn into Arcade Physics here
         // Since createFromObjects returns an array of regular Sprites, we need to convert 
         // them into Arcade Physics sprites (STATIC_BODY, so they don't move) 
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
@@ -210,11 +210,8 @@ class Platformer1 extends Phaser.Scene {
         // movement vfx
         my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
             frame: ['smoke_03.png', 'smoke_09.png'],
-            // TODO: Try: add random: true
             scale: { start: 0.03, end: 0.1 },
-            // TODO: Try: maxAliveParticles: 8,
             lifespan: 350,
-            // TODO: Try: gravityY: -400,
             alpha: { start: 1, end: 0.1 },
         });
 
@@ -232,7 +229,6 @@ class Platformer1 extends Phaser.Scene {
         this.coinText = this.add.text(60, 15, "x", {
             fontSize: '30px'
         });
-        //this.coinText.text = "x " + this.numCoins;
         this.coinText.setColor("#ffffff");
         this.coinText.setScrollFactor(0);
         // camera code
@@ -255,10 +251,10 @@ class Platformer1 extends Phaser.Scene {
         this.button.on('pointerup', function () {
             this.spawnPosX = 30;
             this.spawnPosY = 2045;
-            this.numCoins = 0;
             if (this.numCoins > this.data[9]) {
                 this.data[9] = this.numCoins;
             }
+            this.numCoins = 0;
             this.scene.start("levelScene", this.data);
         }, this);
         this.button.visible = false;
@@ -288,10 +284,6 @@ class Platformer1 extends Phaser.Scene {
 
             // Only play smoke effect if touching the ground
             if (my.sprite.player.body.blocked.down) {
-                //if(this.soundCount >= 120) {
-                //    my.gameSounds.sfx.step1.play();
-                //    this.soundCount = 0;
-                //}
                 if (!this.walk1.isPlaying) {
                     this.walk1.play();
                 }
@@ -301,7 +293,6 @@ class Platformer1 extends Phaser.Scene {
                 }
                 else {
                     my.vfx.walking.stop();
-                    //my.gameSounds.sfx.step1.stop();
                 }
             }
 
@@ -309,16 +300,13 @@ class Platformer1 extends Phaser.Scene {
             my.sprite.player.setAccelerationX(this.ACCELERATION);
             my.sprite.player.setFlip(true, false);
             my.sprite.player.anims.play('walk', true);
+
             // particle following code here
             my.vfx.walking.startFollow(my.sprite.player, my.sprite.player.displayWidth / 2 - 10, my.sprite.player.displayHeight / 2 - 5, false);
             my.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
 
             // Only play smoke effect if touching the ground
             if (my.sprite.player.body.blocked.down) {
-                //if(this.soundCount >= 120) {
-                //    my.gameSounds.sfx.step1.play();
-                //    this.soundCount = 0;
-                //}
                 if (!this.walk1.isPlaying) {
                     this.walk1.play();
                 }
@@ -338,7 +326,6 @@ class Platformer1 extends Phaser.Scene {
             my.sprite.player.setAccelerationX(0);
             my.sprite.player.setDragX(this.DRAG);
             my.sprite.player.anims.play('idle');
-            // TODO: have the vfx stop playing
             my.vfx.walking.stop();
             this.walk1.stop();
         }
@@ -380,11 +367,7 @@ class Platformer1 extends Phaser.Scene {
             if (this.winCount >= 150) {
                 this.showMenuButton();
             }
-            //my.vfx.walking.stop();
-            //my.sprite.player.anims.play('idle');
         }
-
-        //if(this.soundCount >= 120) this.soundCount = 0;
     }
 
     updateText() {

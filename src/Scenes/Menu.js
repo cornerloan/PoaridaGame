@@ -21,8 +21,8 @@ class Menu extends Phaser.Scene {
             //this.scene.start("platformer1Scene");
             let data = [];
             data[0] = 0;  //level to enter on levelScene
-            data[1] = 2;  //number of levels unlocked
-            data[2] = 0;  //checkpoints for level 0
+            data[1] = 0;  //number of levels unlocked
+            data[2] = 2;  //checkpoints for level 0
             data[3] = 0;  //checkpoints for level 1
             data[4] = 0;  //checkpoints for level 2
             data[5] = 0;  //checkpoints for level 3

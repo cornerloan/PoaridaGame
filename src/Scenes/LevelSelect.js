@@ -96,42 +96,6 @@ class LevelSelect extends Phaser.Scene {
         this.levelPointerInitialY = (5 * game.config.height / 6) - 75;
         this.levelPointer = this.add.triangle(game.config.width / 3, this.levelPointerInitialY, 0, 32, 0, 0, 32, 16, 0x000000);
 
-        /*
-        this.level0highscore = this.add.text(this.levelXPositions[0], this.levelCircleY-100, "High Score: ", {
-            fontSize: '20px'
-        });
-        this.level0highscore.setColor("#ffffff");
-        this.level0highscore.setOrigin(0.5);
-        this.level0highscore.visible = false;
-            
-        this.level1highscore = this.add.text(this.levelXPositions[1], this.levelCircleY-100, "High Score: ", {
-            fontSize: '20px'
-        });
-        this.level1highscore.setColor("#ffffff");
-        this.level1highscore.setOrigin(0.5);
-        this.level1highscore.visible = false;
-            
-        this.level2highscore = this.add.text(this.levelXPositions[2], this.levelCircleY-100, "High Score: ", {
-            fontSize: '20px'
-        });
-        this.level2highscore.setColor("#ffffff");
-        this.level2highscore.setOrigin(0.5);
-        this.level2highscore.visible = false;
-            
-        this.level3highscore = this.add.text(this.levelXPositions[3], this.levelCircleY-100, "High Score: ", {
-            fontSize: '20px'
-        });
-        this.level3highscore.setColor("#ffffff");
-        this.level3highscore.setOrigin(0.5);
-        this.level3highscore.visible = false;
-            
-        this.level4highscore = this.add.text(this.levelXPositions[4], this.levelCircleY-100, "High Score: ", {
-            fontSize: '20px'
-        });
-        this.level4highscore.setColor("#ffffff");
-        this.level4highscore.setOrigin(0.5);
-        this.level4highscore.visible = false;
-        */
         this.levelScores = [];
         for (let i = 0; i < 5; i++) {
             let yoffset = -100;
