@@ -31,15 +31,16 @@ class LevelSelect extends Phaser.Scene {
         this.data = data1;
         this.data[7] = 0;
         this.position = this.data[0];
+        if(this.position == undefined) this.position = 0;
         this.checkpointsUnlocked = 0;
         this.justMoved = false;
 
+        //determine how many paths are shown based on levels completed
         this.unlockedLevels = this.data[1];
         if (this.unlockedLevels > 0) {
             this.path = this.add.rectangle(3 * game.config.width / 12, game.config.height / 2, game.config.width / 6, 30, 0xFFFFFF);
             for (let i = 0; i < this.unlockedLevels - 1; i++) {
-                this.path.width += game.config.width / 6;
-
+                if(i!=3)this.path.width += game.config.width / 6;
             }
         }
 
@@ -64,7 +65,7 @@ class LevelSelect extends Phaser.Scene {
         this.spaceKey = this.input.keyboard.addKey('SPACE');
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        let infoStr = "This game supports both WASD and arrow key movements.\nSpacebar also supports jumping.\n\nUse movement to maneuver level and checkpoint selection.\nUse space key to enter the level at the chosen checkpoint.\nUse escape to leave the level.";
+        let infoStr = "This game supports both WASD and arrow key movements.\nSpacebar also supports jumping.\n\nUse movement to maneuver level and checkpoint selection.\nUse space key to enter the level at the chosen checkpoint.\nUse R to respawn at last gained checkpoint.\nUse escape to leave the level.";
         this.infoText = this.add.text(game.config.width / 2, game.config.height / 6, infoStr, {
             fontSize: '20px'
         });
@@ -108,6 +109,47 @@ class LevelSelect extends Phaser.Scene {
             levelHighScore.visible = false;
             this.levelScores[i] = levelHighScore;
         }
+
+        this.unlockButton = this.add.rectangle(game.config.width/9, game.config.height/12, game.config.width/5, game.config.height/10, 0x6666ff);
+        this.unlockButton.setInteractive();
+        this.unlockButton.on('pointerup', function () {
+            //unlock all the levels
+            this.data[1] = 5;
+            //unlock all the checkpoints
+            for(let i = 2; i <= 6; i++){
+                this.data[i] = 2;
+            }
+            //reload the scene with the new data
+            this.scene.restart();
+        }, this);
+        this.unlockButtonText = this.add.text(game.config.width/9, game.config.height/12, "Unlock all levels", {
+            fontSize: '25px'
+        });
+        this.unlockButtonText.setColor("#ffffff");
+        this.unlockButtonText.setOrigin(0.5);
+
+        this.resetButton = this.add.rectangle(game.config.width/9, game.config.height/5, game.config.width/5, game.config.height/10, 0x6666ff);
+        this.resetButton.setInteractive();
+        this.resetButton.on('pointerup', function () {
+            //load scene is used to initialize game, so this button essentially reboots the game just by loading the scene
+            this.scene.start("loadScene");
+        }, this);
+        this.resetButtonText = this.add.text(game.config.width/9, game.config.height/5, "Reset all progress", {
+            fontSize: '25px'
+        });
+        this.resetButtonText.setColor("#ffffff");
+        this.resetButtonText.setOrigin(0.5);
+
+        this.creditsButton = this.add.rectangle(8*game.config.width/9, game.config.height/12, game.config.width/5, game.config.height/10, 0x6666ff);
+        this.creditsButton.setInteractive();
+        this.creditsButton.on('pointerup', function () {
+            this.scene.start("creditsScene", this.data);
+        }, this);
+        this.creditsButtonText = this.add.text(8*game.config.width/9, game.config.height/12, "Credits", {
+            fontSize: '25px'
+        });
+        this.creditsButtonText.setColor("#ffffff");
+        this.creditsButtonText.setOrigin(0.5);
     }
 
     update() {
@@ -238,10 +280,10 @@ class LevelSelect extends Phaser.Scene {
         if (this.position == 1) {
             this.scene.start("platformer1Scene", this.data);
         }
-        /*
         if(this.position == 2){
             this.scene.start("platformer2Scene", this.data);
         }
+        /*
         if(this.position == 3){
             this.scene.start("platformer3Scene", this.data);
         }
@@ -270,7 +312,7 @@ class LevelSelect extends Phaser.Scene {
     }
 
     updateScoreText() {
-        for(let i = 0; i <= this.data[1]; i++){
+        for(let i = 0; i <= this.data[1] && i < 5; i++){
             this.levelScores[i].visible = true;
             this.levelScores[i].text = "High Score: " + this.data[8+i];
         }
