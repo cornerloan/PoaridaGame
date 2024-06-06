@@ -1,17 +1,17 @@
-class Platformer2 extends Phaser.Scene {
+class Platformer3 extends Phaser.Scene {
     constructor() {
-        super("platformer2Scene");
+        super("platformer3Scene");
 
         //30, 2045
         this.spawnPosX = 30;
         this.spawnPosY = 2045;
 
-        this.check0x = 30;
-        this.check0y = 2200;
-        this.check1x = 910;
-        this.check1y = 1760;
-        this.check2x = 910;
-        this.check2y = 1000;
+        this.check0x = 910;
+        this.check0y = 0;
+        this.check1x = 980;
+        this.check1y = 1000;
+        this.check2x = 980;
+        this.check2y = 1760;
 
 
         this.numCoins = 0;
@@ -36,7 +36,7 @@ class Platformer2 extends Phaser.Scene {
 
     create(data1) {
         this.data = data1;
-        this.data[0] = 2;
+        this.data[0] = 3;
 
         //set spawn point based on checkpoint used
         if (this.data[7] == 0) {
@@ -64,7 +64,7 @@ class Platformer2 extends Phaser.Scene {
 
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 60 tiles wide and 150 tiles tall.
-        this.map = this.add.tilemap("platformer-level-2", 18, 18, 60, 1500);
+        this.map = this.add.tilemap("platformer-level-3", 18, 18, 60, 1500);
         this.physics.world.setBounds(0, 0, 60 * 18, 149 * 18);
 
         // Add a tileset to the map
@@ -200,7 +200,7 @@ class Platformer2 extends Phaser.Scene {
             else {
                 this.numCoins -= this.coinCount;
                 this.coinCount = 0;
-                this.scene.start("platformer2Scene", this.data);
+                this.scene.start("platformer3Scene", this.data);
             }
         });
 
@@ -232,14 +232,14 @@ class Platformer2 extends Phaser.Scene {
             obj2.destroy();
             this.coinCount = 0;
             this.data[7]++;
-            this.data[4]++;
+            this.data[5]++;
             if (this.data[7] > 2) {
                 this.data[7] = 2;
                 data1[7] = 2;
             }
-            if (this.data[4] > 2) {
-                this.data[4] = 2;
-                data1[4] = 2;
+            if (this.data[5] > 2) {
+                this.data[5] = 2;
+                data1[5] = 2;
             }
         });
 
@@ -255,7 +255,7 @@ class Platformer2 extends Phaser.Scene {
         this.physics.add.collider(my.sprite.player, this.spikeGroup, (obj1, obj2) => {
             this.numCoins -= this.coinCount;
             this.coinCount = 0;
-            this.scene.start("platformer2Scene", this.data);
+            this.scene.start("platformer3Scene", this.data);
         });
 
         // Handle collision with door
@@ -299,7 +299,6 @@ class Platformer2 extends Phaser.Scene {
 
         this.arc1 = this.add.arc(30, 30, 20, 270, -270, true, 0xFFFF00, 1);
         this.arc1.setScrollFactor(0);
-        //this.arc1.fixedToCamera = true;
         this.coinText = this.add.text(60, 15, "x", {
             fontSize: '30px'
         });
@@ -308,28 +307,28 @@ class Platformer2 extends Phaser.Scene {
 
 
 
-        this.winText = this.add.text(game.config.width / 2, game.config.height / 2, "Congratulations", {
+        this.winText = this.add.text(game.config.width / 2, game.config.height / 1.7, "Congratulations", {
             fontSize: '30px'
         });
         this.winText.setColor("#ffffff");
         this.winText.setScrollFactor(0);
         this.winText.visible = false;
 
-        this.button = this.add.rectangle(game.config.width / 1.66, game.config.height / 1.6, game.config.width / 8, game.config.height / 16, 0x6666ff);
+        this.button = this.add.rectangle(game.config.width / 1.66, game.config.height / 1.4, game.config.width / 8, game.config.height / 16, 0x6666ff);
         this.button.setInteractive();
         this.button.setScrollFactor(0);
         this.button.on('pointerup', function () {
             this.spawnPosX = 30;
             this.spawnPosY = 2045;
-            if (this.numCoins > this.data[10]) {
-                this.data[10] = this.numCoins;
+            if (this.numCoins > this.data[11]) {
+                this.data[11] = this.numCoins;
             }
             this.numCoins = 0;
             this.scene.start("levelScene", this.data);
         }, this);
         this.button.visible = false;
 
-        this.buttonText = this.add.text(game.config.width / 1.66, game.config.height / 1.6, "Main Menu", {
+        this.buttonText = this.add.text(game.config.width / 1.66, game.config.height / 1.4, "Main Menu", {
             fontSize: '25px'
         });
         this.buttonText.setColor("#ffffff");
@@ -422,8 +421,8 @@ class Platformer2 extends Phaser.Scene {
             this.scene.restart();
         }
         if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
-            if (this.numCoins > this.data[10]) {
-                this.data[10] = this.numCoins;
+            if (this.numCoins > this.data[11]) {
+                this.data[11] = this.numCoins;
             }
             this.numCoins = 0;
             this.coinCount = 0;
@@ -453,8 +452,8 @@ class Platformer2 extends Phaser.Scene {
         this.button.visible = true;
         this.buttonText.visible = true;
         //increment levels unlocked only if this is the first time beating this level.
-        if (this.data[1] == 2) {
-            this.data[1] = 3;
+        if (this.data[1] == 3) {
+            this.data[1] = 4;
         }
     }
 

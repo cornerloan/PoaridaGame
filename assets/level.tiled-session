@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "platformer-level-0.tmx",
+    "activeFile": "platformer-level-3.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -68,11 +68,14 @@
             "scaleInDock": 1
         },
         "platformer-level-0.tmx": {
-            "scale": 0.25,
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 910,
-                "y": 64
+                "x": 1028.7878787878788,
+                "y": 427.27272727272725
             }
         },
         "platformer-level-0.tmx#tilemap-backgrounds_packed": {
@@ -90,8 +93,8 @@
             "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 553,
-                "y": 736
+                "x": 3029,
+                "y": 732
             }
         },
         "platformer-level-1.tmx#tilemap-backgrounds": {
@@ -112,11 +115,14 @@
             "scaleInEditor": 1
         },
         "platformer-level-2.tmx": {
-            "scale": 1,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 0.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 340.5,
-                "y": 2411
+                "x": 597,
+                "y": 416
             }
         },
         "platformer-level-2.tmx#tilemap-backgrounds_packed": {
@@ -125,6 +131,20 @@
         "platformer-level-2.tmx#tilemap_packed": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "platformer-level-3.tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 886.5,
+                "y": 2062
+            }
+        },
+        "platformer-level-3.tmx#tilemap-backgrounds_packed": {
+            "scaleInDock": 1
+        },
+        "platformer-level-3.tmx#tilemap_packed": {
+            "scaleInDock": 1
         },
         "platformer-level-tutorial.tmj": {
             "scale": 0.4554722222222222,
@@ -165,13 +185,17 @@
     "map.width": 60,
     "openFiles": [
         "platformer-level-1.tmx",
-        "platformer-level-0.tmx"
+        "platformer-level-0.tmx",
+        "platformer-level-2.tmx",
+        "platformer-level-3.tmx"
     ],
     "project": "level.tiled-project",
     "property.type": "bool",
     "recentFiles": [
         "platformer-level-1.tmx",
         "platformer-level-0.tmx",
+        "platformer-level-2.tmx",
+        "platformer-level-3.tmx",
         "platformer-level-tutorial.tmx",
         "platformer-level-tutorial.tmj",
         "C:/Users/brann/OneDrive/Desktop/school shit/github/TopDownWorld/assets/Tiny Town.tmx",

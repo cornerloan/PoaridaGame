@@ -150,18 +150,18 @@ class Platformer0 extends Phaser.Scene {
         my.sprite.player.setScale(0.7);
 
         this.enemies = [];
-        for(let i = 0; i < 3; i++){
+        for (let i = 0; i < 3; i++) {
             let enemyX = 0;
             let enemyY = 0;
-            if(i == 0){
+            if (i == 0) {
                 enemyX = 1250;
                 enemyY = 470;
             }
-            if(i == 1){
+            if (i == 1) {
                 enemyX = 1250;
                 enemyY = 370;
             }
-            if(i==2){
+            if (i == 2) {
                 enemyX = 1500;
                 enemyY = 370;
             }
@@ -180,7 +180,7 @@ class Platformer0 extends Phaser.Scene {
         // Handle collision detection with enemies
         this.physics.add.collider(my.sprite.player, this.enemies, (obj1, obj2) => {
             //if user is above the enemy, destroy the enemy
-            if(obj1.y < obj2.y){
+            if (obj1.y < obj2.y) {
                 obj2.destroy();
             }
             //otherwise (user didnt jump on enemy) the user dies
@@ -194,8 +194,8 @@ class Platformer0 extends Phaser.Scene {
         this.physics.add.collider(this.enemies, this.borderGroup, (obj1, obj2) => {
             obj1.toggleFlipX();
             let x1 = Number(obj1.flipX);
-            if(x1 == 0) x1 = -1;
-            obj1.setAccelerationX(200*x1);
+            if (x1 == 0) x1 = -1;
+            obj1.setAccelerationX(200 * x1);
         });
 
         // Handle collision detection with coins
@@ -478,19 +478,19 @@ class Platformer0 extends Phaser.Scene {
     }
 
     showTips() {
-        if(my.sprite.player.x < 385) this.text0.visible = true;
+        if (my.sprite.player.x < 385) this.text0.visible = true;
         else this.text0.visible = false;
 
-        if(my.sprite.player.x >= 385 && my.sprite.player.x < 737) this.text1.visible = true;
+        if (my.sprite.player.x >= 385 && my.sprite.player.x < 737) this.text1.visible = true;
         else this.text1.visible = false;
 
-        if(my.sprite.player.x >= 737 && my.sprite.player.x < 1097) this.text2.visible = true;
+        if (my.sprite.player.x >= 737 && my.sprite.player.x < 1097) this.text2.visible = true;
         else this.text2.visible = false;
 
-        if(my.sprite.player.x >= 1097 && my.sprite.player.x < 1646) this.text3.visible = true;
+        if (my.sprite.player.x >= 1097 && my.sprite.player.x < 1646) this.text3.visible = true;
         else this.text3.visible = false;
 
-        if(my.sprite.player.x >= 1646) this.text4.visible = true;
+        if (my.sprite.player.x >= 1646) this.text4.visible = true;
         else this.text4.visible = false;
     }
 }
