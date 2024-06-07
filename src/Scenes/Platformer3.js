@@ -6,7 +6,7 @@ class Platformer3 extends Phaser.Scene {
         this.spawnPosX = 30;
         this.spawnPosY = 2045;
 
-        this.check0x = 910;
+        this.check0x = 800;
         this.check0y = 0;
         this.check1x = 980;
         this.check1y = 1000;
@@ -66,6 +66,7 @@ class Platformer3 extends Phaser.Scene {
         // 60 tiles wide and 150 tiles tall.
         this.map = this.add.tilemap("platformer-level-3", 18, 18, 60, 1500);
         this.physics.world.setBounds(0, 0, 60 * 18, 149 * 18);
+        this.physics.world.TILE_BIAS = 24;
 
         // Add a tileset to the map
         // First parameter: name we gave the tileset in Tiled

@@ -145,11 +145,13 @@ class LevelSelect extends Phaser.Scene {
         this.creditsButton.on('pointerup', function () {
             this.scene.start("creditsScene", this.data);
         }, this);
+        if(this.data[1] != 5) this.creditsButton.visible = false;
         this.creditsButtonText = this.add.text(8 * game.config.width / 9, game.config.height / 12, "Credits", {
             fontSize: '25px'
         });
         this.creditsButtonText.setColor("#ffffff");
         this.creditsButtonText.setOrigin(0.5);
+        if(this.data[1] != 5) this.creditsButtonText.visible = false;
     }
 
     update() {
@@ -286,11 +288,9 @@ class LevelSelect extends Phaser.Scene {
         if(this.position == 3){
             this.scene.start("platformer3Scene", this.data);
         }
-        /*
         if(this.position == 4){
             this.scene.start("platformer4Scene", this.data);
         }
-        */
     }
 
     updateLevelText() {

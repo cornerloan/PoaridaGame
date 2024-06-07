@@ -26,7 +26,7 @@ class Menu extends Phaser.Scene {
             data[3] = 0;  //checkpoints for level 1
             data[4] = 0;  //checkpoints for level 2
             data[5] = 0;  //checkpoints for level 3
-            data[6] = 0;  //checkpoints for level 4
+            data[6] = 2;  //checkpoints for level 4
             data[7] = 0;  //checkpoint to enter on
             data[8] = 0;  //high score coins for level 0
             data[9] = 0;  //high score coins for level 1
