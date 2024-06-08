@@ -74,8 +74,8 @@
             "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1025.7575757575758,
-                "y": 424.24242424242425
+                "x": 898.4848484848485,
+                "y": 404.5454545454545
             }
         },
         "platformer-level-0.tmx#tilemap-backgrounds_packed": {
@@ -93,8 +93,8 @@
             "scale": 0.25,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1346,
-                "y": 924
+                "x": 1798,
+                "y": 542
             }
         },
         "platformer-level-1.tmx#tilemap-backgrounds": {
@@ -121,8 +121,8 @@
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 595,
-                "y": 928
+                "x": 539,
+                "y": 1349
             }
         },
         "platformer-level-2.tmx#tilemap-backgrounds_packed": {
@@ -136,8 +136,8 @@
             "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 659.0909090909092,
-                "y": 1054.5454545454547
+                "x": 537.8787878787879,
+                "y": 1350
             }
         },
         "platformer-level-3.tmx#tilemap-backgrounds_packed": {
@@ -147,11 +147,11 @@
             "scaleInDock": 1
         },
         "platformer-level-4.tmx": {
-            "scale": 0.25,
+            "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1586,
-                "y": 552
+                "x": 2577,
+                "y": 336
             }
         },
         "platformer-level-4.tmx#tilemap-backgrounds_packed": {

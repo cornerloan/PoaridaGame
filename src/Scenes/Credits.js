@@ -10,7 +10,8 @@ class Credits extends Phaser.Scene {
 
     create(data1) {
         this.data = data1;
-        
+
+        //create the text for credits
         this.titleText = this.add.text(game.config.width / 2, game.config.height, "Poarida", {
             fontSize: '50px'
         });
@@ -18,7 +19,6 @@ class Credits extends Phaser.Scene {
         this.titleText.setOrigin(0.5);
 
         let credits = "    Game by\n  Connor Lowe\n\nArt & Sounds by\n   kenneyNL";
-
         this.creditsText = this.add.text(game.config.width / 2, game.config.height + 300, credits, {
             fontSize: '40px'
         });
@@ -36,6 +36,7 @@ class Credits extends Phaser.Scene {
             this.scene.start("levelScene", this.data);
         }
 
+        //scroll the text upwards
         this.titleText.y -= 2;
         this.creditsText.y -= 2;
     }

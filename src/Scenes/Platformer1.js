@@ -2,17 +2,15 @@ class Platformer1 extends Phaser.Scene {
     constructor() {
         super("platformer1Scene");
 
-        //30, 2045
+        //variables to determine where to spawn character after loading into the scene
         this.spawnPosX = 30;
         this.spawnPosY = 2045;
-
         this.check0x = 30;
         this.check0y = 2045;
         this.check1x = 1100;
         this.check1y = 60;
         this.check2x = 2180;
         this.check2y = 210;
-
 
         this.numCoins = 0;
         this.data = [];
@@ -62,20 +60,13 @@ class Platformer1 extends Phaser.Scene {
         this.soundCount = 0;
         this.walk1 = this.sound.add('step1_grass');
 
-        // Create a new tilemap game object which uses 18x18 pixel tiles, and is
-        // 45 tiles wide and 25 tiles tall.
+        // create the map
         this.map = this.add.tilemap("platformer-level-1", 18, 18, 45, 25);
         this.physics.world.setBounds(0, 0, 199 * 18, 50 * 18);
         this.physics.world.TILE_BIAS = 24;
-
-        // Add a tileset to the map
-        // First parameter: name we gave the tileset in Tiled
-        // Second parameter: key for the tilesheet (from this.load.image in Load.js)
         this.tileset = this.map.addTilesetImage("tilemap_packed", "tilemap_tiles");
-        //this.background = this.map.addTilesetImage("tilemap-backgrounds_packed", "tilemap-background");
 
         // Create a layer
-        //this.backgroundLayer = this.map.createLayer("Background-tiles", this.background, 0, 0);
         this.backgroundLayer = this.add.rectangle(0, 0, game.config.width * 18, game.config.height * 18, 0x6bd7ae);
         this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
 
@@ -84,6 +75,7 @@ class Platformer1 extends Phaser.Scene {
             collides: true
         });
 
+        //load objects from layer
         this.coins = this.map.createFromObjects("Objects", {
             name: "coin",
             key: "tilemap_sheet",
@@ -138,7 +130,7 @@ class Platformer1 extends Phaser.Scene {
         this.spikeGroup = this.add.group(this.spikes);
         this.doorGroup = this.add.group(this.doors);
 
-        // set up player avatar (30, 2045)
+        // set up player avatar
         my.sprite.player = this.physics.add.sprite(this.spawnPosX, this.spawnPosY, "platformer_characters", "tile_0000.png");
         my.sprite.player.setCollideWorldBounds(true);
         my.sprite.player.setScale(0.7);
@@ -238,7 +230,7 @@ class Platformer1 extends Phaser.Scene {
         this.cameras.main.setDeadzone(50, 50);
         this.cameras.main.setZoom(this.SCALE);
 
-
+        //code for user beating the level by pressing a button
         this.winText = this.add.text(game.config.width / 1.3, game.config.height / 2, "Congratulations", {
             fontSize: '30px'
         });
@@ -267,6 +259,8 @@ class Platformer1 extends Phaser.Scene {
         this.buttonText.setOrigin(0.5);
         this.buttonText.setScrollFactor(0);
         this.buttonText.visible = false;
+
+        this.physics.world.drawDebug = false;
     }
 
 
@@ -274,6 +268,7 @@ class Platformer1 extends Phaser.Scene {
         this.frameCount++;
         this.soundCount++;
 
+        //code for moving left
         if (cursors.left.isDown || this.aKey.isDown) {
             my.sprite.player.setAccelerationX(-this.ACCELERATION);
             my.sprite.player.resetFlip();
@@ -297,7 +292,9 @@ class Platformer1 extends Phaser.Scene {
                 }
             }
 
-        } else if (cursors.right.isDown || this.dKey.isDown) {
+        }
+        //code for moving right 
+        else if (cursors.right.isDown || this.dKey.isDown) {
             my.sprite.player.setAccelerationX(this.ACCELERATION);
             my.sprite.player.setFlip(true, false);
             my.sprite.player.anims.play('walk', true);
@@ -332,7 +329,6 @@ class Platformer1 extends Phaser.Scene {
         }
 
         // player jump
-        // note that we need body.blocked rather than body.touching b/c the former applies to tilemap tiles and the latter to the "ground"
         if (!my.sprite.player.body.blocked.down) {
             my.sprite.player.anims.play('jump');
         }
@@ -347,11 +343,14 @@ class Platformer1 extends Phaser.Scene {
         this.jumpTimer++;
         if (this.jumpTimer > 15) my.vfx.jumping.stop();
 
+        //restart from checkpoint button
         if (Phaser.Input.Keyboard.JustDown(this.rKey)) {
             this.numCoins -= this.coinCount;
             this.coinCount = 0;
             this.scene.restart();
         }
+
+        //exit level button
         if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
             if (this.numCoins > this.data[9]) {
                 this.data[9] = this.numCoins;
@@ -362,6 +361,7 @@ class Platformer1 extends Phaser.Scene {
         }
         this.updateText();
 
+        //add a delay to showing the win button so user has time to read without accidently exiting
         if (!this.gameActive) {
             this.showWinText();
             this.winCount++;
@@ -371,15 +371,18 @@ class Platformer1 extends Phaser.Scene {
         }
     }
 
+    //update the coin text
     updateText() {
         this.coinText.text = "x" + this.numCoins;
     }
 
+    //show the text for beating the level
     showWinText() {
         this.winText.visible = true;
         this.winText.text = "Congratulations\n" + "Score: " + this.numCoins;
     }
 
+    //show the button to exit to the level selection
     showMenuButton() {
         this.button.visible = true;
         this.buttonText.visible = true;

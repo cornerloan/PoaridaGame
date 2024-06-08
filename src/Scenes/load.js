@@ -30,16 +30,12 @@ class Load extends Phaser.Scene {
         });
 
 
-        // Oooh, fancy. A multi atlas is a texture atlas which has the textures spread
-        // across multiple png files, so as to keep their size small for use with
-        // lower resource devices (like mobile phones).
-        // kenny-particles.json internally has a list of the png files
-        // The multiatlas was created using TexturePacker and the Kenny
-        // Particle Pack asset pack.
+        //load the multiatlas for particle effects
         this.load.multiatlas("kenny-particles", "kenny-particles.json");
     }
 
     create() {
+        //set up animations for walking, idling, jumping, and enemy walking
         this.anims.create({
             key: 'walk',
             frames: this.anims.generateFrameNames('platformer_characters', {
@@ -83,9 +79,9 @@ class Load extends Phaser.Scene {
             repeat: -1
         });
 
-         // ...and pass to the next Scene
-         //this.scene.start("platformerScene");
-         this.scene.start("menuScene");
+
+        //after creating all the new variables, send user to the main menu
+        this.scene.start("menuScene");
     }
 
     // Never get here since a new scene is started in create()
